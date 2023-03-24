@@ -1,7 +1,22 @@
 import express from 'express';
+import cors from 'cors';
 import productsRoute from './routes/products.route.js';
 
 const app = express();
+
+const whiteList = ['http://localhost:3000'];
+
+const corsOptions = {
+
+  origin: (origin, callback) => {
+
+    (whiteList.indexOf(origin) !== -1 || !origin)
+      ? callback(null, true)
+      : callback(new Error('Not allowed by CORS'));
+  }
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
