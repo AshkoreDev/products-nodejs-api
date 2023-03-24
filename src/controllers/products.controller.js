@@ -71,7 +71,7 @@ export const updateProduct = async (req, res) => {
   try {
     
     const [result] = await pool.query('UPDATE products SET name=IFNULL(?, name), description=IFNULL(?, description), price=IFNULL(?, price) WHERE id=?', [name, description, price, id]);
-
+    
     const [rows] = await pool.query('SELECT * FROM products WHERE id=?', [id]);
 
     (result.affectedRows <= 0)
