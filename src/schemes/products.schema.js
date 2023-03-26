@@ -1,23 +1,24 @@
 import Joi from 'joi';
 
 const name = Joi.string().min(1).max(50).messages({
-  'string.base': 'The name must be a string',
-  'string.empty': 'The name cannot be empty',
-  'string.min': 'The name must be larger than or equal to 1',
-  'string.max': 'The name must be less than or equal to 50'
+  'string.base': 'El campo Nombre debe ser de tipo Texto',
+  'string.empty': 'El campo Nombre no puede estar vacío',
+  'string.min': 'El campo Nombre debe ser mayor o igual a 1',
+  'string.max': 'El campo Nombre debe ser mayor o igual a 50'
 });
 
 const description = Joi.string().min(1).max(100).messages({
-  'string.base': 'The description must be a string',
-  'string.empty': 'The description cannot be empty',
-  'string.min': 'The description must be larger than or equal to 1',
-  'string.max': 'The description must be less than or equal to 100'
+  'string.base': 'El campo Descripción debe ser de tipo Texto',
+  'string.empty': 'El campo Descripción no puede estar vacío',
+  'string.min': 'El campo Descripción debe ser mayor o igual a 1',
+  'string.max': 'El campo Descripción debe ser mayor o igual a 100'
 });
 
-const price = Joi.number().positive().precision(2).min(1).messages({
-  'string.base': 'The price must be a string',
-  'string.empty': 'The price cannot be empty',
-  'string.min': 'The price must be larger than or equal to 1'
+const price = Joi.string().min(1).max(30).messages({
+  'string.base': 'El campo Precio debe ser de tipo Numérico',
+  'string.empty': 'El campo Precio no puede estar vacío',
+  'string.min': 'El campo Precio debe ser mayor o igual a 1',
+  'string.max': 'El campo Precio debe ser mayor o igual a 30'
 });
 
 
