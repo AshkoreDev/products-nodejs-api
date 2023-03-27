@@ -22,6 +22,6 @@ app.use(express.json());
 
 app.use('/api', productsRoute);
 
-app.use((req, res) => res.status(404).json({ message: 'ENDPOINT NOT FOUND.' }));
+app.use((req, res) => res.status(404).json({ message: 'ERROR EN LA SOLICITUD.' }));
 
 export default app;

@@ -8,7 +8,7 @@ export const getProducts = async (req, res) => {
     const [rows] = await pool.query('SELECT * FROM products');
     
     (rows.length <= 0)
-      ? res.status(404).json({ message: 'PPRODUCTOS NO ENCONTRADOS.' })
+      ? res.status(404).json({ success: 'error', message: 'PPRODUCTOS NO ENCONTRADOS.' })
       : res.json({ data: rows });
 
   } catch (error) {
@@ -27,7 +27,7 @@ export const getProduct = async (req, res) => {
     const [rows] = await pool.query('SELECT * FROM products WHERE id=?', [id]);
 
     (rows.length <= 0)
-      ? res.status(404).json({ message: 'PRODUCTO NO ENCONTRADO.' })
+      ? res.status(404).json({ success: 'error', message: 'PRODUCTO NO ENCONTRADO.' })
       : res.json({ data: rows });
 
   } catch (error) {
@@ -39,17 +39,25 @@ export const getProduct = async (req, res) => {
 
 export const createProduct = async (req, res) => {
 
-  console.log(req.body);
   const { name, description, price } = req.body;
 
   try {
-    
-    const [rows] = await pool.query('INSERT INTO products (name, description, price) VALUES (?, ?, ?)', [name, description, price]);
+  
+    const [rows] = await pool.query('SELECT name FROM products WHERE name=?', [name]);
+      
+    if(rows[0] !== undefined) {
 
-    res.status(200).json({ success: 'success', message: 'PRODUCTO REGISTRADO' });
+      res.json({ success: 'error', message: 'PRODUCTO REPETIDO' });
+    
+    } else {
+
+      const [result] = await pool.query('INSERT INTO products (name, description, price) VALUES (?, ?, ?)', [name, description, price]);
+      
+      res.status(200).json({ success: 'success', message: 'PRODUCTO REGISTRADO' });
+    }
 
   } catch (error) {
-   
+  
     return res.status(500).json({ success: 'error', message: 'ALGO SALIÓ MAL.' });
   }
 };
@@ -67,7 +75,7 @@ export const updateProduct = async (req, res) => {
     const [rows] = await pool.query('SELECT * FROM products WHERE id=?', [id]);
 
     (result.affectedRows <= 0)
-      ? res.status(404).json({ message: 'PRODUCTO NO ENCONTRADO.' })
+      ? res.status(404).json({ success: 'error', message: 'PRODUCTO NO ENCONTRADO.' })
       : res.status(200).json({ success: 'success', message: 'PRODUCTO MODIFICADO' });
 
   } catch (error) {
@@ -86,10 +94,8 @@ export const deleteProduct = async (req, res) => {
     const [result] = await pool.query('DELETE FROM products WHERE id=?', [id]);
 
     (result.affectedRows <= 0)
-      ? res.status(404).json({ message: 'PRODUCTO NO ENCONTRADO.' })
+      ? res.status(404).json({ success: 'error', message: 'PRODUCTO NO ENCONTRADO.' })
       : res.status(200).json({ success: 'success', message: 'PRODUCTO ELIMINADO' });
-
-      console.log(result);
 
   } catch (error) {
     
